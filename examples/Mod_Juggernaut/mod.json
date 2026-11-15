@@ -1,0 +1,50 @@
+{
+  "format": 2,
+  "id": "Mod_Juggernaut",
+  "name": "Juggernaut (enemy)",
+  "description": "A heavily armoured sosig with boss-level stats and a Vector. Find him in the sosig spawner.",
+  "kind": "npc",
+  "version": 1,
+  "core": {
+    "new": [
+      {"as": "stats", "from": {"key": "SosigStatsProfile/SS_Boss_Warehouse"}, "edits": [
+        {"path": ["m_Name"], "set": "SS_Mod_Juggernaut"},
+        {"path": ["RefId", "_refId"], "set": "extref://footlong.base/SosigStatsProfile/SS_Mod_Juggernaut"},
+        {"path": ["_brawn"], "set": 5},
+        {"path": ["_grit"], "set": 5},
+        {"path": ["_nerve"], "set": 5},
+        {"path": ["_damageResistance"], "set": 0.75},
+        {"path": ["_bleedingMultiplier"], "set": 0.3},
+        {"path": ["_mustardVolume"], "set": 400.0}
+      ]},
+      {"as": "gear", "from": {"key": "LootGroup/SEQ_Boss_Warehouse"}, "edits": [
+        {"path": ["m_Name"], "set": "SEQ_Mod_Juggernaut"},
+        {"path": ["RefId", "_refId"], "set": "extref://footlong.base/LootGroup/SEQ_Mod_Juggernaut"},
+        {"path": ["loot"], "remove_match": {"loot": {"_refId": "extref://footlong.base/SecCard_WRH"}, "probability": 1.0, "multiple": 0, "minCount": 1, "maxCount": 1}}
+      ]},
+      {"as": "profile", "from": {"key": "SosigProfile/Boss_Warehouse"}, "edits": [
+        {"path": ["m_Name"], "set": "SProfile_Mod_Juggernaut"},
+        {"path": ["RefId", "_refId"], "set": "extref://footlong.base/SosigProfile/SProfile_Mod_Juggernaut"},
+        {"path": ["displayName"], "set": "Juggernaut"},
+        {"path": ["stats", "_refId"], "set": "extref://footlong.base/SosigStatsProfile/SS_Mod_Juggernaut"},
+        {"path": ["equipment", "_refId"], "set": "extref://footlong.base/LootGroup/SEQ_Mod_Juggernaut"},
+        {"path": ["killPoints"], "set": 1500},
+        {"path": ["showInSosigSpawnGun"], "set": 1}
+      ]}
+    ],
+    "container": [
+      {"key": "SosigStatsProfile/SS_Mod_Juggernaut", "asset": {"local": "stats"}, "preload": {"like": "SosigStatsProfile/SS_Boss_Warehouse"}},
+      {"key": "LootGroup/SEQ_Mod_Juggernaut", "asset": {"local": "gear"}, "preload": {"like": "LootGroup/SEQ_Boss_Warehouse"}},
+      {"key": "SosigProfile/SProfile_Mod_Juggernaut", "asset": {"local": "profile"}, "preload": {"like": "SosigProfile/Boss_Warehouse"}}
+    ]
+  },
+  "options": [
+    {"id": "patrols", "name": "Can also join SoSec Enforcer patrols in the facility (25% chance)", "default": false,
+     "core": {"edit": [
+       {"target": {"where": {"script": "Footlong.PCG.EnemyEncounter", "contains": "extref://footlong.base/SosigProfile/SProfile_SoSecEnforcer"}},
+        "edits": [{"path": ["enemies"], "duplicate_where": {"contains": "extref://footlong.base/SosigProfile/SProfile_SoSecEnforcer"},
+                   "replace": ["extref://footlong.base/SosigProfile/SProfile_SoSecEnforcer", "extref://footlong.base/SosigProfile/SProfile_Mod_Juggernaut"],
+                   "with": {"probability": 0.25}}]}
+     ]}}
+  ]
+}

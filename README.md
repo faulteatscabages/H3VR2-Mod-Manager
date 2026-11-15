@@ -3,20 +3,20 @@ This is a WIP Mod Manager to Install Mods Into H3VR2 on Quest
 An app that runs on the Quest and adds mods to *Hot Dogs, Horseshoes & Hand Grenades 2*: weapons,
 enemies, loot changes and more. Tick what you want, tap **Apply**, start the game.
 
-Included mods:
+**Download:** [latest release](https://github.com/faulteatscabages/H3VR2-Mod-Manager/releases/latest) → `H3VR2-ModManager.apk`
+
+Mods available:
 
 | Mod | What it is | Options |
 |---|---|---|
-| Portal Gun | SMG, works like the P90 | – |
-| Gravity Gun | auto shotgun, works like the USAS-12 | also in loot and shops |
-| Lightsaber | sword, works like the Kabartana | also in loot |
-| Monado | big sword, works like the Kabartana | also in loot |
-| Tung Tung Tung Sahur | blunt club (hold him by the legs) | also in loot |
 | Juggernaut | armoured boss-level enemy, in the sosig spawner | can join SoSec Enforcer patrols |
+| Portal Gun, Gravity Gun, Lightsaber, Monado, Tung Tung Tung Sahur | custom weapons | coming to the catalog once their model licences are checked |
+
+New mods show up in the app automatically under **Available online**.
 
 ## For players
 
-1. **Install `H3VR2-ModManager.apk`** on your Quest once (SideQuest, or any sideloading method). The app
+1. **Install `H3VR2-ModManager.apk`** from the [latest release](https://github.com/faulteatscabages/H3VR2-Mod-Manager/releases/latest) on your Quest once (SideQuest, or any sideloading method). The app
    then shows up under **Library → Unknown sources**.
 2. **Start the game once** so it finishes downloading its content, then close it.
 3. **Open H3VR2 Mod Manager** and tap **Allow access to game files**. In the settings page that opens,
@@ -106,13 +106,15 @@ A `.h3mod` is a zip with `mod.json`, an optional `icon.png` and optional `bundle
 | `export_mods.py <original pack> <built pack> <build dir> <out dir>` | turns weapons built with `H3VR2-CustomWeapons` into `.h3mod`s |
 | `make_catalog.py <mods dir> <out dir> [--apk … --app-version-code N --app-version-name X --notes "…"]` | builds an online catalog folder |
 
+Custom weapons from GLB models: see [`tools/weapon-builder`](tools/weapon-builder) (PC, needs the game's pack pulled over USB; it never uploads it).
+
 `examples/Mod_Juggernaut/mod.json` is a complete hand-written enemy mod to copy from.
 
 ### Publishing (online catalog)
 
 1. Run `make_catalog.py` on your mods (and the APK, when you release a new app version).
 2. Upload the output folder to any HTTPS host, for example a GitHub repository with GitHub Pages turned on.
-3. Put the URL of `catalog.json` into `Catalog.DEFAULT_URL` (`source/src/com/h3vr2mods/manager/Catalog.java`),
+3. Put the URL of `catalog.json` into `Catalog.DEFAULT_URL` (`app/src/com/h3vr2mods/manager/Catalog.java`; this repo's is already set to `https://faulteatscabages.github.io/H3VR2-Mod-Manager/catalog.json`, served from `docs/`),
    bump `versionCode` in `AndroidManifest.xml`, and rebuild the app once.
 
 After that, publishing a mod update is: bump its `version`, rebuild the catalog, upload. Every player's
@@ -120,12 +122,15 @@ app picks it up the next time it's opened.
 
 ## Building the app
 
-`source/` holds the app (plain Java, no Gradle). `buildapk.sh` builds it with the Android SDK bundled
+`app/` holds the app (plain Java, no Gradle). `buildapk.sh` builds it with the Android SDK bundled
 with Unity (6000.3 with Android support): `./buildapk.sh <project dir> <out.apk>`, after copying the
-`.h3mod` files you want bundled into `<project dir>/assets/mods/`. Sign with your own key at
+`.h3mod` files you want bundled into `app/assets/mods/`. Sign with your own key at
 `debug.keystore` next to the script (`keytool -genkeypair …`). Use the same key for every release,
 because Android only installs updates signed with the same key.
 
 ## Notes
 - Unofficial fan project, not affiliated with RUST LTD. Mods can break with game updates.
 - The included models depict other companies' IP and come from third-party creators off SketchFab
+
+## Credits
+- Model credits will be listed here for each weapon mod when it's published.

@@ -1,0 +1,15 @@
+# signing keys: never commit
+*.keystore
+*.jks
+# game files: never commit
+*.hdog
+cache/
+# build output / local
+build/
+*.apk
+__pycache__/
+.venv/
+.DS_Store
+# third-party models (check licences before adding)
+tools/weapon-builder/models/*
+!tools/weapon-builder/models/README.md

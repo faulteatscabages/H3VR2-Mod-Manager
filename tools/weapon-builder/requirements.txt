@@ -1,0 +1,7 @@
+UnityPy==1.25.4
+trimesh==5.2.1
+numpy
+pillow
+matplotlib
+scipy
+networkx

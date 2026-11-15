@@ -1,0 +1,19 @@
+{
+ "mods": [
+  {
+   "id": "Mod_Juggernaut",
+   "name": "Juggernaut (enemy)",
+   "description": "A heavily armoured sosig with boss-level stats and a Vector. Find him in the sosig spawner.",
+   "kind": "npc",
+   "version": 1,
+   "url": "mods/Mod_Juggernaut.h3mod",
+   "size": 8311
+  }
+ ],
+ "app": {
+  "versionCode": 3,
+  "versionName": "1.2",
+  "url": "https://github.com/faulteatscabages/H3VR2-Mod-Manager/releases/latest/download/H3VR2-ModManager.apk",
+  "notes": "First public release."
+ }
+}
