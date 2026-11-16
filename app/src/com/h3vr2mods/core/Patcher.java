@@ -17,6 +17,8 @@ import java.util.*;
  */
 public final class Patcher {
     public static final String FIRST = "footlong.aaa_mods.hdog", LAST = "footlong.zzz_mods.hdog";
+    /** Mod features this patcher understands; a mod with a higher "min_app" is skipped with a clear message. */
+    public static final long FORMAT_LEVEL = 4;
     public static final String CORE = "footlong.base";
 
     public interface Log { void log(String s); }
@@ -128,6 +130,9 @@ public final class Patcher {
             for (ModPackage m : mods) {
                 log.log("Adding " + m.name + "…");
                 try {
+                    Object minApp = m.meta.get("min_app");
+                    if (minApp instanceof Number && ((Number) minApp).longValue() > FORMAT_LEVEL)
+                        throw new Ops.ModError("needs a newer version of the Mod Manager app");
                     Map<String, Object> core = m.meta.containsKey("core") ? Json.obj(m.meta.get("core")) : new HashMap<>();
                     Map<String, Long> locals = new HashMap<>();
                     applyCore(c, m, core, locals);
@@ -141,8 +146,13 @@ public final class Patcher {
                         if (outBundles.containsKey(name) || base.byName.containsKey(name)) throw new Ops.ModError("bundle " + name + " already exists");
                         if (b.containsKey("file")) outBundles.put(name, m.entry((String) b.get("file")));
                         else {
-                            String donorKey = (String) Json.obj(b.get("donor")).get("item");
-                            String guid = (String) Json.obj(c.tree(c.key(donorKey)).get("_prefab")).get("_assetGuid");
+                            // donor: {"item": <item key>} -> that item's prefab bundle, or
+                            //        {"key": <object key>, "path": [...]} -> the bundle of the asset GUID at that field
+                            Map<String, Object> donor = Json.obj(b.get("donor"));
+                            String donorKey = (String) (donor.containsKey("item") ? donor.get("item") : donor.get("key"));
+                            String guid = donor.containsKey("item")
+                                    ? (String) Json.obj(c.tree(c.key(donorKey)).get("_prefab")).get("_assetGuid")
+                                    : (String) Ops.get(c.tree(c.key(donorKey)), Json.arr(donor.get("path")));
                             String donorBundle = (String) a2b.get(guid);
                             if (donorBundle == null) throw new Ops.ModError("can't find the bundle of " + donorKey);
                             outBundles.put(name, buildBundle(c, m, b, base.read(donorBundle)));

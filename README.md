@@ -97,6 +97,9 @@ A `.h3mod` is a zip with `mod.json`, an optional `icon.png` and optional `bundle
   `{"name", "donor": {"item": "P90_Tactical"}, "cab", "types", "new" (objects: raw data + class + external
   references), "edit" (field edits on the donor's objects), "rename" (asset GUIDs), "preload_add", "guids"}`.
   You don't write these by hand. The PC tools in `H3VR2-CustomWeapons` turn a GLB model into one.
+- **NPC bodies:** `tools/weapon-builder/tools/build_npc.py` turns a humanoid GLB into an enemy that uses the
+  model as its body (it bends, ragdolls and loses limbs like a sosig). Needs app 1.3 or newer: a mod can set
+  `"min_app"` and older apps skip it with a clear message.
 
 ### Tools (`tools/`, Python 3 + `pip install UnityPy pillow`)
 

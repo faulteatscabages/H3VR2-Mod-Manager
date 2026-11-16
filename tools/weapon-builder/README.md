@@ -74,6 +74,22 @@ Everything happens on your own copy. No game files are included in this package.
 3. Run the installer. Look at `cache/build/<id>_fit.png` to check the alignment: red crosses are
    grips and the muzzle, green boxes are colliders.
 
+## Making an NPC from a model
+
+`tools/build_npc.py <original footlong.base.hdog> <model.glb> <out dir> [config.json]` turns a humanoid
+GLB (standing, facing forward, about A- or T-pose) into a `.h3mod` enemy for the Mod Manager app.
+
+A sosig's body is one mesh that the game bends across 4 physics bones (legs, hips, torso, head).
+The script paints the model's vertices onto those bones, so the NPC walks, bobs, leans, crouches,
+ragdolls and loses limbs like any sosig. It can't add skeletal animation (e.g. swinging arms):
+the game has no animation system for sosigs, and Quest mods can't add code.
+Hands stay the floating sosig hands that hold weapons.
+
+`config.json` can override `id`, `display`, `name`, `description`, `height`, `cuts` (legs|hips,
+hips|torso and torso|head boundaries as fractions of height), `arm_x`, `head_x`, `base_profile`
+(whose AI/gear to copy, default the SoSec Enforcer) and `credit`. Check `<id>_weights.png` in the
+output folder to see which bone each part follows. The mod needs Mod Manager 1.3 or newer.
+
 ## Notes / limits
 - Moving parts (bolt, trigger, charging handle) are not animated on the custom models; the
   donor's mechanics still work (reloading, cycling, fire modes).

@@ -11,9 +11,9 @@
   }
  ],
  "app": {
-  "versionCode": 3,
-  "versionName": "1.2",
+  "versionCode": 4,
+  "versionName": "1.3",
   "url": "https://github.com/faulteatscabages/H3VR2-Mod-Manager/releases/latest/download/H3VR2-ModManager.apk",
-  "notes": "First public release."
+  "notes": "Adds support for custom NPC bodies (enemies with their own model). Mods that need a newer app now say so."
  }
 }
